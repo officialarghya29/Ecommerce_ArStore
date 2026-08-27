@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
 
 class ApiService {
   static getToken() {
@@ -87,6 +87,33 @@ class ApiService {
 
   static async getOrder(id) {
     return this.request(`/orders/${id}`);
+  }
+
+  // Admin - Users
+  static async getAllUsers() {
+    return this.request('/users');
+  }
+
+  // Reviews
+  static async getProductReviews(productId) {
+    return this.request(`/reviews/product/${productId}`);
+  }
+
+  static async getProductRatingSummary(productId) {
+    return this.request(`/reviews/product/${productId}/summary`);
+  }
+
+  static async createReview(productId, reviewData) {
+    return this.request(`/reviews/product/${productId}`, {
+      method: 'POST',
+      body: JSON.stringify(reviewData),
+    });
+  }
+
+  static async deleteReview(id) {
+    return this.request(`/reviews/${id}`, {
+      method: 'DELETE',
+    });
   }
 
   // Admin
